@@ -32,7 +32,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -42,6 +41,10 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   background: var(--white);
+  /* Prevent scrolling — single-view funnel */
+  overflow-y: hidden;
+  height: 100vh;
+  height: 100dvh;
 }
 
 img { max-width: 100%; display: block; }
@@ -52,17 +55,110 @@ input { font-family: inherit; }
 /* ========== TYPOGRAPHY ========== */
 .font-inter { font-family: 'Inter', sans-serif; }
 
+/* ========== PROGRESS BAR ========== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(26, 26, 94, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.progress-logo {
+  height: 28px;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+}
+.progress-logo-fallback {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: none;
+  flex-shrink: 0;
+}
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--pink);
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 12.5%; /* 1/8 */
+}
+.progress-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 48px;
+  text-align: right;
+}
+
+/* ========== FUNNEL CONTAINER ========== */
+.funnel-viewport {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
 /* ========== SECTIONS ========== */
 section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 24px;
-  position: relative;
-  overflow: hidden;
+  padding: 72px 24px 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateX(40px);
+}
+section.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+  z-index: 2;
+}
+section.exit-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+section.exit-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+/* Make all fade-in-up elements visible immediately in funnel mode */
+section.active .fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .section-inner {
@@ -74,12 +170,8 @@ section {
 /* ========== ANIMATIONS ========== */
 .fade-in-up {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.fade-in-up.visible {
-  opacity: 1;
-  transform: translateY(0);
+  transform: translateY(30px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .delay-1 { transition-delay: 0.1s; }
 .delay-2 { transition-delay: 0.2s; }
@@ -89,59 +181,6 @@ section {
 @keyframes pulse {
   0%, 100% { box-shadow: 0 4px 24px var(--pink-glow); }
   50% { box-shadow: 0 4px 40px var(--pink-glow), 0 0 60px rgba(255,107,157,0.18); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-/* ========== TOP NAV ========== */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  transition: background 0.35s ease, backdrop-filter 0.35s ease;
-}
-.top-nav.scrolled {
-  background: rgba(26, 26, 94, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.nav-logo {
-  height: 32px;
-  filter: brightness(0) invert(1);
-}
-.nav-logo-fallback {
-  color: var(--white);
-  font-weight: 700;
-  font-size: 1.25rem;
-  display: none;
-}
-.nav-dots {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.nav-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.35);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-}
-.nav-dot.active {
-  background: var(--pink);
-  transform: scale(1.3);
 }
 
 /* ========== CTA BUTTONS ========== */
@@ -166,26 +205,67 @@ section {
   transform: scale(1.05);
 }
 
-/* ========== FLOATING CTA ========== */
-.floating-cta {
+/* ========== STEP NAV BUTTONS ========== */
+.step-nav {
   position: fixed;
-  z-index: 900;
-  bottom: 24px;
-  right: 24px;
-  opacity: 0;
-  transform: translateY(30px);
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
-.floating-cta.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: all;
+/* Dark bg pages need different step-nav */
+.step-nav.dark {
+  background: rgba(26, 26, 94, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
-.floating-cta .cta-btn {
-  font-size: 0.95rem;
-  padding: 14px 28px;
-  box-shadow: 0 8px 32px rgba(255,107,157,0.35);
+
+.step-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 14px 36px;
+  border-radius: 60px;
+  transition: all 0.3s ease;
+  border: none;
+  min-height: 50px;
+}
+.step-btn-next {
+  background: var(--pink);
+  color: var(--white);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+.step-btn-next:hover {
+  background: var(--pink-hover);
+  transform: scale(1.05);
+}
+.step-btn-prev {
+  background: transparent;
+  color: var(--navy);
+  border: 2px solid rgba(26, 26, 94, 0.2);
+}
+.step-btn-prev:hover {
+  border-color: var(--navy);
+  background: rgba(26, 26, 94, 0.05);
+}
+.step-nav.dark .step-btn-prev {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.step-nav.dark .step-btn-prev:hover {
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* ========================================
@@ -194,10 +274,9 @@ section {
 #page1 {
   background: linear-gradient(170deg, var(--navy) 0%, var(--navy-light) 100%);
   text-align: center;
-  position: relative;
+  position: absolute;
 }
 
-/* 幾何方塊裝飾 */
 #page1::before {
   content: '';
   position: absolute;
@@ -449,10 +528,7 @@ section {
   color: var(--gray-muted);
   line-height: 1.7;
 }
-/* Desktop arrows between steps */
-.step-arrow {
-  display: none;
-}
+.step-arrow { display: none; }
 .page4-bottom {
   text-align: center;
   color: var(--navy);
@@ -700,7 +776,7 @@ section {
    ======================================== */
 #page8 {
   background: linear-gradient(180deg, var(--navy) 0%, #151550 100%);
-  padding-bottom: 40px;
+  padding-bottom: 120px;
 }
 .trust-count {
   text-align: center;
@@ -797,7 +873,7 @@ section {
    RESPONSIVE — TABLET (768-1023)
    ======================================== */
 @media (min-width: 768px) and (max-width: 1023px) {
-  section { padding: 64px 32px; }
+  section { padding: 72px 32px 100px; }
   .pain-grid { gap: 20px; }
   .pain-card { padding: 28px 20px; }
   .steps-container { gap: 20px; }
@@ -831,13 +907,11 @@ section {
    ======================================== */
 @media (max-width: 767px) {
   section {
-    padding: 64px 20px;
-    min-height: auto;
+    padding: 64px 20px 110px;
   }
-  #page1 { min-height: 100vh; min-height: 100dvh; }
 
-  .nav-dots { gap: 6px; }
-  .nav-dot { width: 6px; height: 6px; }
+  .progress-bar { padding: 10px 16px; gap: 10px; }
+  .progress-label { font-size: 0.75rem; min-width: 40px; }
 
   /* Page 2 */
   .pain-grid {
@@ -897,18 +971,12 @@ section {
   }
   .footer-left { flex-direction: column; gap: 8px; }
 
-  /* Floating CTA — mobile full width */
-  .floating-cta {
-    left: 16px;
-    right: 16px;
-    bottom: 24px;
-  }
-  .floating-cta .cta-btn {
-    width: 100%;
-    padding: 16px 24px;
-  }
+  /* Step nav — full width on mobile */
+  .step-nav { padding: 12px 16px; gap: 12px; }
+  .step-btn { flex: 1; padding: 14px 20px; font-size: 0.95rem; }
+  .step-btn-prev { flex: 0.6; }
 
-  /* Mobile: CTA full width */
+  /* Mobile CTA full width */
   .cta-btn-mobile-full {
     width: 100%;
   }
@@ -917,31 +985,23 @@ section {
 </head>
 <body>
 
-<!-- ========== TOP NAV ========== -->
-<nav class="top-nav" id="topNav">
-  <img src="https://lihi.io/assets/images/lihi-logo-primary.png" alt="lihi.io" class="nav-logo" id="navLogo" onerror="this.style.display='none'; document.getElementById('navLogoFallback').style.display='block';">
-  <span class="nav-logo-fallback" id="navLogoFallback">lihi.io</span>
-  <div class="nav-dots" id="navDots">
-    <button class="nav-dot active" data-section="0" aria-label="Page 1"></button>
-    <button class="nav-dot" data-section="1" aria-label="Page 2"></button>
-    <button class="nav-dot" data-section="2" aria-label="Page 3"></button>
-    <button class="nav-dot" data-section="3" aria-label="Page 4"></button>
-    <button class="nav-dot" data-section="4" aria-label="Page 5"></button>
-    <button class="nav-dot" data-section="5" aria-label="Page 6"></button>
-    <button class="nav-dot" data-section="6" aria-label="Page 7"></button>
-    <button class="nav-dot" data-section="7" aria-label="Page 8"></button>
+<!-- ========== PROGRESS BAR ========== -->
+<div class="progress-bar" id="progressBar">
+  <img src="https://lihi.io/assets/images/lihi-logo-primary.png" alt="lihi.io" class="progress-logo" id="progressLogo" onerror="this.style.display='none'; document.getElementById('progressLogoFallback').style.display='block';">
+  <span class="progress-logo-fallback" id="progressLogoFallback">lihi.io</span>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
   </div>
-</nav>
-
-<!-- ========== FLOATING CTA ========== -->
-<div class="floating-cta" id="floatingCta">
-  <button class="cta-btn" onclick="scrollToSection(6)">免費下載 ↓</button>
+  <span class="progress-label font-inter" id="progressLabel">1 / 8</span>
 </div>
+
+<!-- ========== FUNNEL VIEWPORT ========== -->
+<div class="funnel-viewport" id="funnelViewport">
 
 <!-- ======================================================
      PAGE 1: HERO — 恐懼觸發
      ====================================================== -->
-<section id="page1">
+<section id="page1" class="active" data-theme="dark">
   <div class="hero-deco-1"></div>
   <div class="hero-deco-2"></div>
   <div class="section-inner" style="text-align:center; position:relative; z-index:1;">
@@ -952,9 +1012,6 @@ section {
       你的好產品，值得被更多人看見。<br>
       一份免費攻略，教你怎麼讓客人自己找上門。
     </p>
-    <div class="fade-in-up delay-2">
-      <button class="cta-btn" onclick="scrollToSection(6)">免費領取攻略 ↓</button>
-    </div>
     <p class="hero-social-proof fade-in-up delay-3">
       已有 <span class="count font-inter" data-target="1200">0</span>+ 在地商家下載
     </p>
@@ -964,7 +1021,7 @@ section {
 <!-- ======================================================
      PAGE 2: 痛點放大 — 情緒加壓
      ====================================================== -->
-<section id="page2">
+<section id="page2" data-theme="light">
   <div class="section-inner">
     <h2 class="page2-title fade-in-up">每天都在經歷這些，對吧？</h2>
     <div class="pain-grid">
@@ -992,7 +1049,7 @@ section {
 <!-- ======================================================
      PAGE 3: 真正原因 — 認知翻轉
      ====================================================== -->
-<section id="page3">
+<section id="page3" data-theme="dark">
   <div class="section-inner">
     <h2 class="page3-title fade-in-up">你的客人想買，但看不懂你在賣什麼</h2>
     <div class="flip-container">
@@ -1023,7 +1080,7 @@ section {
 <!-- ======================================================
      PAGE 4: 解法框架 — 給希望
      ====================================================== -->
-<section id="page4">
+<section id="page4" data-theme="light">
   <div class="section-inner">
     <h2 class="page4-title fade-in-up">其實，只要做對 3 件事</h2>
     <div class="steps-container">
@@ -1055,7 +1112,7 @@ section {
 <!-- ======================================================
      PAGE 5: 實戰證明 — Before / After
      ====================================================== -->
-<section id="page5">
+<section id="page5" data-theme="light">
   <div class="section-inner">
     <h2 class="page5-title fade-in-up">同一家店，只是換了文案</h2>
     <div class="ba-container">
@@ -1092,7 +1149,7 @@ section {
 <!-- ======================================================
      PAGE 6: 更多乾貨預覽 — 放大渴望
      ====================================================== -->
-<section id="page6">
+<section id="page6" data-theme="dark">
   <div class="section-inner">
     <h2 class="page6-title fade-in-up">攻略裡還教你這些</h2>
     <div class="feature-grid">
@@ -1117,16 +1174,13 @@ section {
         <p>不用花 3-5 萬請人做網站<br>用 lihi 的免費工具<br>10 分鐘就有一個專業的數位名片</p>
       </div>
     </div>
-    <div style="text-align:center;" class="fade-in-up">
-      <button class="cta-btn" onclick="scrollToSection(6)">免費下載完整攻略 →</button>
-    </div>
   </div>
 </section>
 
 <!-- ======================================================
      PAGE 7: LEAD CAPTURE — 收單
      ====================================================== -->
-<section id="page7">
+<section id="page7" data-theme="light">
   <div class="section-inner">
     <div class="capture-container">
       <div class="pdf-mockup fade-in-up delay-1">
@@ -1153,9 +1207,8 @@ section {
 <!-- ======================================================
      PAGE 8: 信任補刀 + FOOTER
      ====================================================== -->
-<section id="page8">
+<section id="page8" data-theme="dark">
   <div class="section-inner">
-    <!-- 8A: 社會證明數字 -->
     <div class="trust-count fade-in-up">
       <div>
         <span>已有 </span>
@@ -1164,7 +1217,6 @@ section {
       </div>
     </div>
 
-    <!-- 8B: 推薦語 -->
     <div class="testimonials">
       <div class="testimonial-card fade-in-up delay-1">
         <blockquote>「終於看懂行銷該怎麼做了！內容很實用，不是那種空泛的理論。」</blockquote>
@@ -1180,13 +1232,10 @@ section {
       </div>
     </div>
 
-    <!-- 8C: 最終 CTA -->
     <div class="final-cta-area fade-in-up">
       <p class="nudge">還沒下載？</p>
-      <button class="cta-btn cta-btn-mobile-full" onclick="scrollToSection(6)">點這裡，免費獲取完整攻略 →</button>
     </div>
 
-    <!-- 8D: Footer -->
     <footer class="footer">
       <div class="footer-left">
         <img src="https://lihi.io/assets/images/lihi-logo-primary.png" alt="lihi.io" class="footer-logo" onerror="this.outerHTML='<span style=\'color:rgba(255,255,255,0.5); font-weight:700; font-size:0.9rem;\'>lihi.io</span>'">
@@ -1201,64 +1250,171 @@ section {
   </div>
 </section>
 
-<script>
-/* ========== GLOBALS ========== */
-const sections = document.querySelectorAll('section');
-const navDots = document.querySelectorAll('.nav-dot');
-const topNav = document.getElementById('topNav');
-const floatingCta = document.getElementById('floatingCta');
+</div><!-- /funnel-viewport -->
 
-/* ========== SMOOTH SCROLL ========== */
-function scrollToSection(index) {
-  sections[index]?.scrollIntoView({ behavior: 'smooth' });
+<!-- ========== STEP NAV ========== -->
+<div class="step-nav" id="stepNav">
+  <button class="step-btn step-btn-next" id="btnNext" onclick="goNext()">下一步 →</button>
+</div>
+
+<script>
+/* ========== FUNNEL STATE ========== */
+const TOTAL_STEPS = 8;
+let currentStep = 0; // 0-indexed
+const sections = document.querySelectorAll('section');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const stepNav = document.getElementById('stepNav');
+const btnNext = document.getElementById('btnNext');
+
+/* ========== DARK PAGES (for step-nav theming) ========== */
+const darkPages = new Set();
+sections.forEach((s, i) => {
+  if (s.dataset.theme === 'dark') darkPages.add(i);
+});
+
+/* ========== UPDATE UI ========== */
+function updateUI() {
+  // Progress bar
+  const pct = ((currentStep + 1) / TOTAL_STEPS) * 100;
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = (currentStep + 1) + ' / ' + TOTAL_STEPS;
+
+  // Step nav theme
+  stepNav.classList.toggle('dark', darkPages.has(currentStep));
+
+  // Build nav buttons
+  let html = '';
+
+  // Prev button (not on page 1)
+  if (currentStep > 0) {
+    html += '<button class="step-btn step-btn-prev" onclick="goPrev()">← 上一步</button>';
+  }
+
+  // Next / Submit button logic
+  if (currentStep === 6) {
+    // Page 7 = Lead Capture → submit form
+    html += '<button class="step-btn step-btn-next" onclick="submitAndNext()">立即免費下載 →</button>';
+  } else if (currentStep === 7) {
+    // Page 8 = Final → scroll back to form
+    html += '<button class="step-btn step-btn-next" onclick="goToStep(6)">點這裡，免費獲取完整攻略 →</button>';
+  } else {
+    html += '<button class="step-btn step-btn-next" onclick="goNext()">下一步 →</button>';
+  }
+
+  stepNav.innerHTML = html;
 }
 
-/* ========== NAV DOTS ========== */
-navDots.forEach(dot => {
-  dot.addEventListener('click', () => {
-    scrollToSection(parseInt(dot.dataset.section));
+/* ========== NAVIGATION ========== */
+let isTransitioning = false;
+
+function goToStep(target) {
+  if (isTransitioning || target === currentStep || target < 0 || target >= TOTAL_STEPS) return;
+  isTransitioning = true;
+
+  const goingForward = target > currentStep;
+  const oldSection = sections[currentStep];
+  const newSection = sections[target];
+
+  // Reset fade-in-up for new section
+  newSection.querySelectorAll('.fade-in-up').forEach(el => {
+    el.classList.remove('visible');
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
   });
-});
 
-/* ========== INTERSECTION OBSERVER — FADE IN ========== */
-const fadeObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  // Exit old
+  oldSection.classList.remove('active');
+  oldSection.classList.add(goingForward ? 'exit-left' : 'exit-right');
 
-document.querySelectorAll('.fade-in-up').forEach(el => fadeObserver.observe(el));
+  // Prepare new section entry direction
+  newSection.style.transition = 'none';
+  newSection.style.transform = goingForward ? 'translateX(40px)' : 'translateX(-40px)';
+  newSection.style.opacity = '0';
 
-/* ========== INTERSECTION OBSERVER — SECTION TRACKING ========== */
-const sectionObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const index = Array.from(sections).indexOf(entry.target);
-      navDots.forEach((d, i) => d.classList.toggle('active', i === index));
-    }
-  });
-}, { threshold: 0.35 });
+  // Force reflow
+  void newSection.offsetWidth;
 
-sections.forEach(s => sectionObserver.observe(s));
+  // Animate in
+  newSection.style.transition = '';
+  newSection.classList.add('active');
+  newSection.classList.remove('exit-left', 'exit-right');
 
-/* ========== SCROLL EVENTS ========== */
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-      // Nav background
-      topNav.classList.toggle('scrolled', scrollY > 80);
-      // Floating CTA — show after scrolling past page 1
-      const page1Bottom = sections[0].offsetTop + sections[0].offsetHeight;
-      floatingCta.classList.toggle('show', scrollY > page1Bottom * 0.6);
-      ticking = false;
+  currentStep = target;
+  updateUI();
+
+  // Scroll section to top
+  newSection.scrollTop = 0;
+
+  // Trigger fade-in-up animations after a short delay
+  setTimeout(() => {
+    newSection.querySelectorAll('.fade-in-up').forEach(el => {
+      el.style.opacity = '';
+      el.style.transform = '';
+      el.classList.add('visible');
     });
-    ticking = true;
+  }, 50);
+
+  // Clean up old section
+  setTimeout(() => {
+    oldSection.classList.remove('exit-left', 'exit-right');
+    isTransitioning = false;
+  }, 350);
+
+  // Trigger counters on relevant pages
+  if (target === 0 || target === 7) {
+    triggerCounters(newSection);
   }
-});
+}
+
+function goNext() {
+  goToStep(currentStep + 1);
+}
+
+function goPrev() {
+  goToStep(currentStep - 1);
+}
+
+/* ========== FORM SUBMIT FROM STEP NAV ========== */
+function submitAndNext() {
+  const form = document.getElementById('leadForm');
+  const emailInput = document.getElementById('emailInput');
+
+  if (!emailInput.value || !emailInput.validity.valid) {
+    emailInput.focus();
+    emailInput.reportValidity();
+    return;
+  }
+
+  // Trigger the form submit handler
+  handleSubmit(new Event('submit', { cancelable: true }));
+
+  // Go to next step after brief delay
+  setTimeout(() => {
+    goToStep(7);
+  }, 800);
+}
+
+/* ========== FORM SUBMIT ========== */
+function handleSubmit(e) {
+  if (e.preventDefault) e.preventDefault();
+  const email = document.getElementById('emailInput').value;
+  if (!email) return;
+
+  const btn = document.querySelector('#leadForm button[type="submit"]');
+  if (btn) {
+    const originalText = btn.textContent;
+    btn.textContent = '✅ 已送出！請檢查你的信箱';
+    btn.style.background = '#27ae60';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 4000);
+  }
+}
 
 /* ========== NUMBER COUNTER ANIMATION ========== */
 function animateCounter(el) {
@@ -1278,37 +1434,50 @@ function animateCounter(el) {
   requestAnimationFrame(update);
 }
 
-const counterEls = document.querySelectorAll('[data-target]');
 const counterTriggered = new Set();
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && !counterTriggered.has(entry.target)) {
-      counterTriggered.add(entry.target);
-      animateCounter(entry.target);
+function triggerCounters(section) {
+  section.querySelectorAll('[data-target]').forEach(el => {
+    if (!counterTriggered.has(el)) {
+      counterTriggered.add(el);
+      setTimeout(() => animateCounter(el), 400);
     }
   });
-}, { threshold: 0.5 });
-
-counterEls.forEach(el => counterObserver.observe(el));
-
-/* ========== FORM SUBMIT ========== */
-function handleSubmit(e) {
-  e.preventDefault();
-  const email = document.getElementById('emailInput').value;
-  if (!email) return;
-  
-  const btn = e.target.querySelector('button[type="submit"]');
-  const originalText = btn.textContent;
-  btn.textContent = '✅ 已送出！請檢查你的信箱';
-  btn.style.background = '#27ae60';
-  btn.disabled = true;
-  
-  setTimeout(() => {
-    btn.textContent = originalText;
-    btn.style.background = '';
-    btn.disabled = false;
-  }, 4000);
 }
+
+/* ========== KEYBOARD NAV ========== */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    goNext();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    goPrev();
+  }
+});
+
+/* ========== SWIPE SUPPORT (MOBILE) ========== */
+let touchStartX = 0;
+let touchStartY = 0;
+document.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  // Only trigger on horizontal swipes (not vertical scrolling)
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    if (dx < 0) goNext();   // swipe left = next
+    else goPrev();           // swipe right = prev
+  }
+});
+
+/* ========== INIT ========== */
+// Set first page active with animations
+sections[0].querySelectorAll('.fade-in-up').forEach(el => el.classList.add('visible'));
+triggerCounters(sections[0]);
+updateUI();
 </script>
 </body>
 </html>
