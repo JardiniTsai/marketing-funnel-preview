@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在地商家行銷攻略 — lihi.io</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --pink: #FF6B9D;
+  --pink-hover: #FF85B1;
+  --pink-glow: rgba(255, 107, 157, 0.4);
+  --navy: #1A1A5E;
+  --navy-light: #2A2A7E;
+  --light-pink: #FFB3CC;
+  --light-pink-bg: #FFF0F5;
+  --white: #FFFFFF;
+  --gray-100: #F8F9FA;
+  --gray-200: #E9ECEF;
+  --gray-400: #ADB5BD;
+  --gray-600: #6C757D;
+  --shadow-sm: 0 2px 8px rgba(26, 26, 94, 0.08);
+  --shadow-md: 0 4px 20px rgba(26, 26, 94, 0.12);
+  --shadow-lg: 0 8px 40px rgba(26, 26, 94, 0.16);
+  --shadow-card-hover: 0 12px 48px rgba(26, 26, 94, 0.2);
+  --radius: 16px;
+  --radius-sm: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Noto Sans TC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--navy);
+  background: var(--white);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ===== TYPOGRAPHY ===== */
+.section-title {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 900;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 400;
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+/* ===== LAYOUT ===== */
+.section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== ANIMATION ===== */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s var(--transition), transform 0.7s var(--transition);
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+
+/* ===== CTA BUTTON ===== */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--pink);
+  color: var(--white);
+  font-size: 1.125rem;
+  font-weight: 700;
+  padding: 16px 40px;
+  border-radius: 60px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: 0 4px 24px var(--pink-glow);
+  font-family: inherit;
+  min-height: 56px;
+}
+
+.cta-btn:hover {
+  background: var(--pink-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 32px rgba(255, 107, 157, 0.5);
+}
+
+.cta-btn:active { transform: scale(0.98); }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.4s ease;
+  background: transparent;
+}
+
+.nav.scrolled {
+  background: rgba(26, 26, 94, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 24px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+
+.nav-logo img {
+  height: 32px;
+  filter: brightness(0) invert(1);
+}
+
+.nav-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+}
+
+.nav-dot.active {
+  background: var(--pink);
+  transform: scale(1.3);
+}
+
+/* ===== FLOATING CTA ===== */
+.floating-cta {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  background: var(--pink);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 14px 24px;
+  border-radius: 60px;
+  box-shadow: 0 4px 24px var(--pink-glow);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  font-family: inherit;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.floating-cta.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.floating-cta:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 32px rgba(255, 107, 157, 0.6);
+}
+
+/* ===== PAGE 1: HERO ===== */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 50%, #33337A 100%);
+  color: var(--white);
+  text-align: center;
+  position: relative;
+}
+
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 4px;
+  background: var(--pink);
+  opacity: 0.15;
+}
+
+.hero::before {
+  width: 80px;
+  height: 80px;
+  top: 12%;
+  left: 8%;
+  transform: rotate(15deg);
+}
+
+.hero::after {
+  width: 50px;
+  height: 50px;
+  bottom: 15%;
+  right: 10%;
+  transform: rotate(-20deg);
+}
+
+.hero-decor-1,
+.hero-decor-2,
+.hero-decor-3 {
+  position: absolute;
+  background: var(--pink);
+  border-radius: 4px;
+  opacity: 0.08;
+}
+
+.hero-decor-1 { width: 30px; height: 30px; top: 25%; right: 18%; transform: rotate(45deg); }
+.hero-decor-2 { width: 60px; height: 60px; bottom: 25%; left: 15%; transform: rotate(-10deg); }
+.hero-decor-3 { width: 20px; height: 20px; top: 60%; left: 30%; transform: rotate(30deg); }
+
+.hero .section-title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.2);
+}
+
+.hero .section-subtitle {
+  color: var(--light-pink);
+  margin-bottom: 3rem;
+  font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+}
+
+/* ===== PAGE 2: PAIN POINTS ===== */
+.pain-points {
+  background: var(--white);
+}
+
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 3rem 0 2.5rem;
+}
+
+.pain-card {
+  background: var(--white);
+  border: 1px solid rgba(26, 26, 94, 0.08);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+
+.pain-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--light-pink);
+}
+
+.pain-card .emoji {
+  font-size: 2.75rem;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.pain-card p {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--navy);
+  line-height: 1.5;
+}
+
+.pain-bottom {
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--pink);
+  margin-top: 0.5rem;
+}
+
+/* ===== PAGE 3: ROOT CAUSE ===== */
+.root-cause {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: var(--white);
+}
+
+.root-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin: 3rem 0 2.5rem;
+}
+
+.ad-mockup {
+  background: rgba(255,255,255,0.06);
+  border: 2px dashed rgba(255,255,255,0.2);
+  border-radius: var(--radius);
+  aspect-ratio: 4/5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.problem-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.problem-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.problem-list .icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.root-quote {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--light-pink);
+  font-style: italic;
+  padding-top: 1rem;
+}
+
+/* ===== PAGE 4: SOLUTION ===== */
+.solution {
+  background: var(--light-pink-bg);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin: 3rem 0 2.5rem;
+  position: relative;
+}
+
+.step-card {
+  background: var(--white);
+  border: 2px solid rgba(26, 26, 94, 0.08);
+  border-radius: var(--radius);
+  padding: 40px 28px 36px;
+  text-align: center;
+  position: relative;
+  transition: all var(--transition);
+}
+
+.step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pink);
+}
+
+.step-num {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink), var(--light-pink));
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.step-card .step-icon {
+  font-size: 2.25rem;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.step-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--navy);
+}
+
+.step-card p {
+  font-size: 0.95rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+.step-arrow {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: -22px;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: var(--pink);
+  z-index: 2;
+}
+
+.solution-bottom {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--navy);
+  opacity: 0.8;
+}
+
+/* ===== PAGE 5: EXAMPLE ===== */
+.example {
+  background: var(--white);
+}
+
+.compare-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  align-items: stretch;
+  margin: 3rem 0 2.5rem;
+}
+
+.compare-card {
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  transition: all var(--transition);
+}
+
+.compare-card.before {
+  background: var(--gray-100);
+  border: 2px solid var(--gray-200);
+}
+
+.compare-card.after {
+  background: var(--white);
+  border: 2px solid var(--pink);
+  box-shadow: 0 0 40px rgba(255, 107, 157, 0.12);
+}
+
+.compare-card .label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.compare-card.before .label {
+  background: var(--gray-200);
+  color: var(--gray-600);
+}
+
+.compare-card.after .label {
+  background: rgba(255, 107, 157, 0.12);
+  color: var(--pink);
+}
+
+.compare-card blockquote {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--navy);
+  font-style: italic;
+}
+
+.compare-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--pink);
+  font-weight: 700;
+}
+
+.example-bottom {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* ===== PAGE 6: ADVANCED ===== */
+.advanced {
+  background: linear-gradient(135deg, var(--navy) 0%, #222270 100%);
+  color: var(--white);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 3rem 0;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  transition: all var(--transition);
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.13);
+  transform: translateY(-4px);
+  border-color: rgba(255, 179, 204, 0.3);
+}
+
+.feature-card .feat-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.feature-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  opacity: 0.75;
+  line-height: 1.6;
+}
+
+/* ===== PAGE 7: LEAD CAPTURE ===== */
+.lead-capture {
+  background: linear-gradient(180deg, var(--light-pink-bg) 0%, var(--white) 100%);
+}
+
+.lead-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.pdf-mockup {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  border-radius: var(--radius);
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  transform: perspective(800px) rotateY(-5deg);
+  transition: transform var(--transition);
+  max-height: 480px;
+}
+
+.pdf-mockup:hover {
+  transform: perspective(800px) rotateY(0deg);
+}
+
+.pdf-mockup .pdf-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 16px;
+}
+
+.pdf-mockup .pdf-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.pdf-mockup .pdf-sub {
+  font-size: 0.9rem;
+  color: var(--light-pink);
+}
+
+.lead-form-wrapper {
+  max-width: 480px;
+}
+
+.lead-form-wrapper .section-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.lead-form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--navy);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid rgba(26, 26, 94, 0.12);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--navy);
+  background: var(--white);
+  transition: border-color var(--transition);
+  -webkit-appearance: none;
+  min-height: 52px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--pink);
+  box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
+}
+
+.form-group input::placeholder {
+  color: var(--gray-400);
+}
+
+.form-cta {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 1.15rem;
+  justify-content: center;
+}
+
+.form-privacy {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--gray-600);
+  margin-top: 4px;
+}
+
+/* ===== PAGE 8: FOOTER ===== */
+.footer-section {
+  background: linear-gradient(135deg, var(--navy) 0%, #151550 100%);
+  color: var(--white);
+  min-height: auto;
+  padding: 80px 24px 40px;
+}
+
+.social-proof-number {
+  text-align: center;
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  font-weight: 700;
+  margin-bottom: 3rem;
+  color: var(--light-pink);
+}
+
+.social-proof-number span {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+}
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 3rem;
+}
+
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: center;
+  transition: all var(--transition);
+}
+
+.testimonial-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-4px);
+}
+
+.testimonial-card .quote {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.testimonial-card .author {
+  font-size: 0.85rem;
+  color: var(--light-pink);
+  font-weight: 600;
+}
+
+.footer-cta-area {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-cta-area p {
+  font-size: 1.1rem;
+  margin-bottom: 1.25rem;
+  opacity: 0.8;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-brand img {
+  height: 28px;
+  filter: brightness(0) invert(1);
+}
+
+.footer-brand span {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.footer-social {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-social a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition);
+}
+
+.footer-social a:hover {
+  background: var(--pink);
+  transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE: TABLET ===== */
+@media (max-width: 1023px) {
+  .section { padding: 60px 20px; }
+
+  .root-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .ad-mockup { max-width: 360px; margin: 0 auto; aspect-ratio: 16/10; }
+
+  .steps-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  .compare-wrapper { gap: 16px; }
+
+  .lead-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .pdf-mockup {
+    max-width: 320px;
+    margin: 0 auto;
+    max-height: 400px;
+    transform: none;
+  }
+
+  .pdf-mockup:hover { transform: none; }
+
+  .lead-form-wrapper { max-width: 100%; }
+}
+
+/* ===== RESPONSIVE: MOBILE ===== */
+@media (max-width: 767px) {
+  .section { padding: 60px 16px; min-height: auto; min-height: 100dvh; }
+
+  .nav { padding: 12px 16px; }
+  .nav-dots { gap: 6px; }
+  .nav-dot { width: 8px; height: 8px; }
+
+  .hero .section-title { font-size: clamp(1.75rem, 7vw, 2.5rem); }
+
+  .pain-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pain-card { padding: 28px 20px; }
+
+  .root-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .ad-mockup {
+    max-width: 100%;
+    aspect-ratio: 16/9;
+  }
+
+  .problem-list li { font-size: 1rem; }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .step-card { padding: 32px 24px; }
+
+  .compare-wrapper {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .compare-arrow {
+    transform: rotate(90deg);
+    padding: 8px 0;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .feature-card { padding: 28px 20px; }
+
+  .lead-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .pdf-mockup {
+    max-width: 240px;
+    max-height: 320px;
+    margin: 0 auto;
+    transform: none;
+  }
+
+  .lead-form-wrapper { max-width: 100%; }
+
+  .cta-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 16px 32px;
+  }
+
+  .testimonials {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .floating-cta {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 14px 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav-logo">
+    <img src="https://lihi.io/assets/images/lihi-logo-primary.png" alt="lihi.io" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-weight:800;font-size:1.2rem;color:#fff\'>lihi.io</span>'">
+  </a>
+  <div class="nav-dots">
+    <button class="nav-dot active" data-section="0" aria-label="Hero"></button>
+    <button class="nav-dot" data-section="1" aria-label="痛點"></button>
+    <button class="nav-dot" data-section="2" aria-label="問題"></button>
+    <button class="nav-dot" data-section="3" aria-label="解法"></button>
+    <button class="nav-dot" data-section="4" aria-label="範例"></button>
+    <button class="nav-dot" data-section="5" aria-label="進階"></button>
+    <button class="nav-dot" data-section="6" aria-label="下載"></button>
+    <button class="nav-dot" data-section="7" aria-label="Footer"></button>
+  </div>
+</nav>
+
+<!-- ===== FLOATING CTA ===== -->
+<button class="floating-cta" id="floatingCta" onclick="document.getElementById('lead').scrollIntoView({behavior:'smooth'})">
+  免費下載 ↓
+</button>
+
+<!-- ===== PAGE 1: HERO ===== -->
+<section class="section hero" id="hero">
+  <div class="hero-decor-1"></div>
+  <div class="hero-decor-2"></div>
+  <div class="hero-decor-3"></div>
+  <div class="container" style="text-align:center">
+    <h1 class="section-title fade-in-up">好的產品沒人知道，也是枉然</h1>
+    <p class="section-subtitle fade-in-up delay-1">在地商家行銷攻略 — 讓你的好產品被看見</p>
+    <div class="fade-in-up delay-2">
+      <a href="#lead" class="cta-btn">免費下載攻略 ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGE 2: PAIN POINTS ===== -->
+<section class="section pain-points" id="pain">
+  <div class="container">
+    <h2 class="section-title fade-in-up" style="text-align:center">你是不是也遇到這些問題？</h2>
+    <div class="pain-grid">
+      <div class="pain-card fade-in-up delay-1">
+        <span class="emoji">😫</span>
+        <p>來客數不足，生意越來越淡</p>
+      </div>
+      <div class="pain-card fade-in-up delay-2">
+        <span class="emoji">💸</span>
+        <p>做了優惠促銷，還是沒人來</p>
+      </div>
+      <div class="pain-card fade-in-up delay-3">
+        <span class="emoji">😔</span>
+        <p>開始懷疑自己的產品不夠好</p>
+      </div>
+      <div class="pain-card fade-in-up delay-4">
+        <span class="emoji">🤷</span>
+        <p>不知道問題到底出在哪裡</p>
+      </div>
+    </div>
+    <p class="pain-bottom fade-in-up">其實，問題不在你的產品——而是行銷方式</p>
+  </div>
+</section>
+
+<!-- ===== PAGE 3: ROOT CAUSE ===== -->
+<section class="section root-cause" id="root">
+  <div class="container">
+    <h2 class="section-title fade-in-up" style="text-align:center">行銷人看到的真正問題</h2>
+    <div class="root-layout">
+      <div class="ad-mockup fade-in-up delay-1">
+        <div>
+          <div style="font-size:2.5rem;margin-bottom:12px">📱</div>
+          <p>失敗廣告示意<br><small style="opacity:0.5">（實際範例圖片）</small></p>
+        </div>
+      </div>
+      <div class="fade-in-up delay-2">
+        <ul class="problem-list">
+          <li><span class="icon">❌</span> 看不到店家名稱</li>
+          <li><span class="icon">❌</span> 找不到產品優點</li>
+          <li><span class="icon">❌</span> 不知道在賣什麼</li>
+          <li><span class="icon">❌</span> 不清楚價格</li>
+          <li><span class="icon">❌</span> 在這些都不清楚的狀況下，優惠不會有加分</li>
+        </ul>
+      </div>
+    </div>
+    <p class="root-quote fade-in-up">「消費者不是不想買，是看不懂你在賣什麼」</p>
+  </div>
+</section>
+
+<!-- ===== PAGE 4: SOLUTION ===== -->
+<section class="section solution" id="solution">
+  <div class="container">
+    <h2 class="section-title fade-in-up" style="text-align:center">3 步驟，讓客人看懂你在賣什麼</h2>
+    <div class="steps-grid">
+      <div class="step-card fade-in-up delay-1">
+        <div class="step-num">1</div>
+        <span class="step-icon">🔍</span>
+        <h3>問自己關鍵問題</h3>
+        <p>釐清品牌基本資訊，找到你的核心價值</p>
+        <span class="step-arrow">→</span>
+      </div>
+      <div class="step-card fade-in-up delay-2">
+        <div class="step-num">2</div>
+        <span class="step-icon">📝</span>
+        <h3>整理成一段好文案</h3>
+        <p>把答案變成吸引人的故事，讓客人秒懂</p>
+        <span class="step-arrow">→</span>
+      </div>
+      <div class="step-card fade-in-up delay-3">
+        <div class="step-num">3</div>
+        <span class="step-icon">📢</span>
+        <h3>選對渠道投放出去</h3>
+        <p>讓對的人在對的地方看到你</p>
+      </div>
+    </div>
+    <p class="solution-bottom fade-in-up">攻略裡有完整的操作步驟和範例 👇</p>
+  </div>
+</section>
+
+<!-- ===== PAGE 5: EXAMPLE ===== -->
+<section class="section example" id="example">
+  <div class="container">
+    <h2 class="section-title fade-in-up" style="text-align:center">實戰範例：從零到有效的文案</h2>
+    <div class="compare-wrapper">
+      <div class="compare-card before fade-in-up delay-1">
+        <span class="label">Before</span>
+        <blockquote>「我們賣肉醬，很好吃，打折中」</blockquote>
+      </div>
+      <div class="compare-arrow fade-in-up delay-2">→</div>
+      <div class="compare-card after fade-in-up delay-3">
+        <span class="label">After ✨</span>
+        <blockquote>「大家好，我們是貝佛街，九年製作義大利波隆肉醬的經驗。每日新鮮食材現做，熬煮六小時，每天限量 200 包。堅持不加防腐劑，讓每一口都是真材實料的好味道。」</blockquote>
+      </div>
+    </div>
+    <p class="example-bottom fade-in-up">看出差別了嗎？好的文案讓人秒懂你的價值</p>
+  </div>
+</section>
+
+<!-- ===== PAGE 6: ADVANCED ===== -->
+<section class="section advanced" id="advanced">
+  <div class="container">
+    <h2 class="section-title fade-in-up" style="text-align:center">攻略裡還有這些乾貨</h2>
+    <div class="feature-grid">
+      <div class="feature-card fade-in-up delay-1">
+        <span class="feat-icon">🤖</span>
+        <h3>用 AI 幫你寫文案</h3>
+        <p>不會寫？ChatGPT 幫你搞定，附完整 prompt 範本</p>
+      </div>
+      <div class="feature-card fade-in-up delay-2">
+        <span class="feat-icon">🎯</span>
+        <h3>附加產品策略</h3>
+        <p>不打折也能吸引客人，學會創造額外價值</p>
+      </div>
+      <div class="feature-card fade-in-up delay-3">
+        <span class="feat-icon">📊</span>
+        <h3>行銷追蹤技巧</h3>
+        <p>知道哪個渠道最有效，把預算花在刀口上</p>
+      </div>
+      <div class="feature-card fade-in-up delay-4">
+        <span class="feat-icon">💡</span>
+        <h3>品牌建立基礎</h3>
+        <p>從網域開始打造專業形象，建立長期信任</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGE 7: LEAD CAPTURE ===== -->
+<section class="section lead-capture" id="lead">
+  <div class="container">
+    <div class="lead-layout">
+      <div class="pdf-mockup fade-in-up">
+        <span class="pdf-label">免費下載</span>
+        <span class="pdf-title">在地商家<br>行銷攻略</span>
+        <span class="pdf-sub">lihi.io 出品</span>
+      </div>
+      <div class="lead-form-wrapper fade-in-up delay-1">
+        <h2 class="section-title">免費下載<br>《在地商家行銷攻略》</h2>
+        <p class="section-subtitle">輸入 Email，立即獲得完整攻略 PDF</p>
+        <form class="lead-form" onsubmit="event.preventDefault(); alert('感謝！攻略將寄到你的信箱 📩');">
+          <div class="form-group">
+            <label for="name">你的名字</label>
+            <input type="text" id="name" placeholder="例如：王小明" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email 信箱</label>
+            <input type="email" id="email" placeholder="example@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="industry">你的行業</label>
+            <select id="industry" required>
+              <option value="" disabled selected>選擇你的行業</option>
+              <option value="food">餐飲</option>
+              <option value="retail">零售</option>
+              <option value="service">服務業</option>
+              <option value="beauty">美業</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+          <button type="submit" class="cta-btn form-cta">立即免費下載 →</button>
+        </form>
+        <p class="form-privacy">🔒 我們尊重你的隱私，不會寄送垃圾信</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGE 8: FOOTER ===== -->
+<section class="section footer-section" id="footer">
+  <div class="container">
+    <div class="social-proof-number fade-in-up">
+      已有 <span>1,200+</span> 商家下載這份攻略
+    </div>
+
+    <div class="testimonials">
+      <div class="testimonial-card fade-in-up delay-1">
+        <p class="quote">「終於看懂行銷該怎麼做了！內容很實用，不是空泛的理論。」</p>
+        <p class="author">— 某餐飲店主</p>
+      </div>
+      <div class="testimonial-card fade-in-up delay-2">
+        <p class="quote">「照著做之後，來客數真的有增加，而且是持續性的成長。」</p>
+        <p class="author">— 某零售店主</p>
+      </div>
+      <div class="testimonial-card fade-in-up delay-3">
+        <p class="quote">「文案的部分幫助最大，以前完全不知道怎麼寫。」</p>
+        <p class="author">— 某美業老闆</p>
+      </div>
+    </div>
+
+    <div class="footer-cta-area fade-in-up">
+      <p>還沒下載？別錯過這份免費攻略</p>
+      <a href="#lead" class="cta-btn">點這裡免費獲取 →</a>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-brand">
+        <img src="https://lihi.io/assets/images/lihi-logo-primary.png" alt="lihi.io" onerror="this.style.display='none';this.parentElement.querySelector('span').textContent='lihi.io — 行銷人的好朋友'">
+        <span>Powered by lihi.io — 行銷人的好朋友</span>
+      </div>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook">📘</a>
+        <a href="#" aria-label="YouTube">▶️</a>
+        <a href="#" aria-label="Blog">📝</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===== IntersectionObserver: Fade-in-up ===== */
+(function() {
+  const els = document.querySelectorAll('.fade-in-up');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  els.forEach(function(el) { observer.observe(el); });
+})();
+
+/* ===== Nav scroll effect ===== */
+(function() {
+  var nav = document.getElementById('nav');
+  var floatingCta = document.getElementById('floatingCta');
+  var sections = document.querySelectorAll('.section');
+  var dots = document.querySelectorAll('.nav-dot');
+
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY;
+
+    // Nav background
+    if (scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+
+    // Floating CTA
+    if (scrollY > window.innerHeight * 0.5) {
+      floatingCta.classList.add('show');
+    } else {
+      floatingCta.classList.remove('show');
+    }
+
+    // Active dot
+    var current = 0;
+    sections.forEach(function(section, i) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.5) {
+        current = i;
+      }
+    });
+
+    dots.forEach(function(dot, i) {
+      dot.classList.toggle('active', i === current);
+    });
+  }, { passive: true });
+
+  // Dot click navigation
+  dots.forEach(function(dot) {
+    dot.addEventListener('click', function() {
+      var idx = parseInt(this.getAttribute('data-section'));
+      sections[idx].scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+})();
+
+/* ===== Counter animation for social proof ===== */
+(function() {
+  var proofEl = document.querySelector('.social-proof-number span');
+  if (!proofEl) return;
+  var target = 1200;
+  var animated = false;
+
+  var observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !animated) {
+      animated = true;
+      var start = 0;
+      var duration = 1500;
+      var startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = Math.floor(eased * target);
+        proofEl.textContent = current.toLocaleString() + '+';
+        if (progress < 1) requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+    }
+  }, { threshold: 0.5 });
+
+  observer.observe(proofEl);
+})();
+</script>
+
+</body>
+</html>
