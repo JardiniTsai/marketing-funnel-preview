@@ -285,23 +285,35 @@ section.active .fade-in-up {
 .hero-title {
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 900;
-  color: #FFD9E6 !important;
   line-height: 1.35;
   margin-bottom: 24px;
   position: relative;
   z-index: 1;
   text-shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
+.hero-title .highlight {
+  color: #FF6B5B !important;
+}
 .hero-sub {
-  color: var(--light-pink);
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: #FFFFFF;
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.hero-cta {
+  color: #FF6B5B;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
   line-height: 1.7;
   margin-bottom: 40px;
   position: relative;
   z-index: 1;
 }
 .hero-social-proof {
-  color: var(--gray-muted);
+  color: #E0E0E0;
   font-size: 0.85rem;
   margin-top: 16px;
   position: relative;
@@ -310,6 +322,7 @@ section.active .fade-in-up {
 .hero-social-proof .count {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
+  color: #FF6B5B !important;
 }
 
 /* ========================================
@@ -966,12 +979,14 @@ section.active .fade-in-up {
      ====================================================== -->
 <section id="page1" class="active" data-theme="dark">
   <div class="section-inner" style="text-align:center; position:relative; z-index:1;">
-    <h1 class="hero-title fade-in-up" style="color: #FFD9E6 !important;">
-      你的客人正在找你<br>但他們找到的是你的對手
+    <h1 class="hero-title fade-in-up" style="color: #FFFFFF !important;">
+      你的客人正在找你<br>但他們找到的是你的<span class="highlight">對手</span>
     </h1>
     <p class="hero-sub fade-in-up delay-1">
-      你的好產品，值得被更多人看見。<br>
-      一份免費攻略，教你怎麼讓客人自己找上門。
+      你的好產品，值得被更多人看見。
+    </p>
+    <p class="hero-cta fade-in-up delay-2">
+      🎁 一份免費攻略，教你怎麼讓客人自己找上門
     </p>
     <p class="hero-social-proof fade-in-up delay-3">
       已有 <span class="count font-inter" data-target="1200">0</span>+ 在地商家下載
