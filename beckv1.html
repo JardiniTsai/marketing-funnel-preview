@@ -1308,18 +1308,26 @@ function goToStep(target) {
   oldSection.classList.remove('active');
   oldSection.classList.add(goingForward ? 'exit-left' : 'exit-right');
 
-  // Prepare new section entry direction
+  // Prepare new section entry direction - CRITICAL: clear old inline styles first
   newSection.style.transition = 'none';
   newSection.style.transform = goingForward ? 'translateX(40px)' : 'translateX(-40px)';
   newSection.style.opacity = '0';
+  newSection.style.visibility = 'hidden';
 
   // Force reflow
   void newSection.offsetWidth;
 
   // Animate in
-  newSection.style.transition = '';
   newSection.classList.add('active');
   newSection.classList.remove('exit-left', 'exit-right');
+  
+  // Trigger animation with proper inline styles
+  requestAnimationFrame(() => {
+    newSection.style.transition = '';
+    newSection.style.transform = '';
+    newSection.style.opacity = '1';
+    newSection.style.visibility = 'visible';
+  });
 
   currentStep = target;
   updateUI();
@@ -1336,9 +1344,12 @@ function goToStep(target) {
     });
   }, 50);
 
-  // Clean up old section
+  // Clean up old section - CRITICAL: clear inline styles and ensure it's hidden
   setTimeout(() => {
     oldSection.classList.remove('exit-left', 'exit-right');
+    oldSection.style.transform = '';
+    oldSection.style.opacity = '';
+    oldSection.style.visibility = '';
     isTransitioning = false;
   }, 350);
 
