@@ -140,12 +140,16 @@ section {
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
   transform: translateX(40px);
+
+  /* Critical fix: ensure content is visible */
+  visibility: hidden;
 }
 section.active {
   opacity: 1;
   pointer-events: all;
   transform: translateX(0);
   z-index: 2;
+  visibility: visible;
 }
 section.exit-left {
   opacity: 0;
