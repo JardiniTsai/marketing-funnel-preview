@@ -426,24 +426,93 @@ section.active .fade-in-up {
 .page2-layout {
   display: grid;
   grid-template-columns: 0.8fr 1fr;
-  gap: 20px;
+  gap: 24px;
   align-items: stretch;
   margin-bottom: 20px;
 }
 .page2-image-col {
   position: relative;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.page2-image-col img {
+.page2-screenshot-frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(26,26,94,0.12);
+  border: 3px solid var(--pink);
+  height: 100%;
+  background: var(--white);
+}
+.page2-screenshot-frame img {
   width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.page2-screenshot-overlay {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: var(--pink);
+  color: var(--white);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(255,107,157,0.3);
+}
+.page2-text-cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+.page2-col {
+  background: rgba(255,255,255,0.95);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(26,26,94,0.1);
+  padding: 20px;
+  box-shadow: 0 2px 16px rgba(26,26,94,0.08);
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+.page2-col-left {
+  border-left-color: var(--navy);
+}
+.page2-col-right {
+  border-left-color: var(--pink);
+}
+.page2-col:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 24px rgba(26,26,94,0.12);
+}
+.page2-col h3 {
+  font-size: 1.50rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--navy);
+}
+.page2-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.page2-list li {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  padding-left: 24px;
+  position: relative;
+  color: var(--text-on-light);
+}
+.page2-list li::before {
+  content: "●";
+  color: var(--pink);
+  font-size: 0.8rem;
+  position: absolute;
+  left: 0;
+  top: 4px;
+}
+.page2-list li.highlight {
+  color: var(--pink);
+  font-weight: 700;
 }
 .page2-text-cols {
   display: grid;
@@ -1120,14 +1189,19 @@ section.active .fade-in-up {
 <section id="page2" data-theme="light">
   <div class="section-inner">
     <div class="page2-layout fade-in-up delay-1">
-      <!-- Left: Image -->
+      <!-- Left: Screenshot with lihi design frame -->
       <div class="page2-image-col">
-        <img src="./reference_images/page2-screenshot.png" alt="店家抱怨文截圖">
+        <div class="page2-screenshot-frame">
+          <img src="./reference_images/page2-screenshot.png" alt="店家抱怨文截圖">
+          <div class="page2-screenshot-overlay">
+            <div class="lihi-badge">lihi.io</div>
+          </div>
+        </div>
       </div>
       
       <!-- Right: Two text sections stacked -->
       <div class="page2-text-cols">
-        <div class="page2-col">
+        <div class="page2-col page2-col-left">
           <h3>我們常常遇到的問題</h3>
           <ul class="page2-list">
             <li>來客數不足</li>
@@ -1136,14 +1210,14 @@ section.active .fade-in-up {
             <li>開始懷疑人生</li>
           </ul>
         </div>
-        <div class="page2-col">
+        <div class="page2-col page2-col-right">
           <h3>行銷人看到的問題</h3>
           <ul class="page2-list">
             <li>不知道店家名稱</li>
             <li>看不到產品優點</li>
             <li>不知道在賣什麼</li>
             <li>不清楚價格</li>
-            <li style="color: var(--pink); font-weight: 700;">在這些都不清楚的情況下，優惠並不會有任何加分</li>
+            <li class="highlight">在這些都不清楚的情況下，優惠並不會有任何加分</li>
           </ul>
         </div>
       </div>
