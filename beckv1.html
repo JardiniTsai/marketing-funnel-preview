@@ -1280,8 +1280,11 @@ function updateUI() {
   } else if (currentStep === 7) {
     // Page 8 = Final → scroll back to form
     html += '<button class="step-btn step-btn-next" onclick="goToStep(6)">點這裡，免費獲取完整攻略 →</button>';
-  } else {
+  } else if (currentStep === 0) {
+    // Page 1 only: use "馬上開始"
     html += '<button class="step-btn step-btn-next" onclick="goNext()">馬上開始 →</button>';
+  } else {
+    html += '<button class="step-btn step-btn-next" onclick="goNext()">下一步 →</button>';
   }
 
   stepNav.innerHTML = html;
