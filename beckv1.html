@@ -344,15 +344,15 @@ section.active .fade-in-up {
    PAGE 2: 重新設計 - 左右二欄布局
    ======================================== */
 #page2 {
-  background: var(--light-pink-bg);
+  background: #FAFAFA;
   padding-top: 20px !important;
   padding-bottom: 25px !important;
 }
 
 .page2-new-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 45% 55%;
+  gap: 40px;
   align-items: stretch;
   margin-bottom: 20px;
 }
@@ -366,13 +366,12 @@ section.active .fade-in-up {
 
 .page2-reference-image {
   max-width: 100%;
-  max-height: 400px;
+  max-height: 440px;
   height: auto;
   width: auto;
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(26,26,94,0.15);
-  border: 2px solid var(--pink);
 }
 
 /* 右側文案區域 */
@@ -384,29 +383,18 @@ section.active .fade-in-up {
 }
 
 .page2-content-block {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(26,26,94,0.08);
+  padding: 16px 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.page2-block-1 {
-  border-left: 4px solid var(--navy);
-}
-
-.page2-block-2 {
-  border-left: 4px solid var(--pink);
-}
-
 .page2-content-block h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 12px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--pink);
+  margin-bottom: 14px;
   line-height: 1.3;
 }
 
@@ -417,30 +405,58 @@ section.active .fade-in-up {
 }
 
 .page2-problem-list li {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.5;
   color: var(--navy);
-  margin-bottom: 8px;
-  padding-left: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding-left: 28px;
   position: relative;
 }
 
 .page2-problem-list li::before {
-  content: "•";
-  color: var(--pink);
+  content: "✓";
+  color: var(--white);
+  background: var(--pink);
   font-weight: 700;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   left: 0;
-  top: 0;
+  top: 2px;
 }
 
 .highlight-text {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--pink);
-  margin-top: 12px;
+  margin-top: 14px;
   margin-bottom: 0;
   line-height: 1.5;
+  padding-left: 28px;
+  position: relative;
+}
+
+.highlight-text::before {
+  content: "✓";
+  color: var(--white);
+  background: var(--pink);
+  font-weight: 700;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  top: 2px;
 }
 
 /* 底部問題 */
@@ -451,7 +467,11 @@ section.active .fade-in-up {
 .page2-bottom-question p {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--pink);
+  color: var(--white);
+  background: var(--pink);
+  display: inline-block;
+  padding: 14px 36px;
+  border-radius: 12px;
   margin: 0;
   line-height: 1.4;
 }
@@ -977,21 +997,23 @@ section.active .fade-in-up {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .page2-reference-image {
-    max-width: 90%;
+    max-width: 85%;
+    max-height: 320px;
   }
-  
+
   .page2-right-content {
-    gap: 12px;
+    gap: 8px;
   }
-  
+
   .page2-content-block {
-    padding: 16px;
+    padding: 12px 0;
   }
-  
+
   .page2-bottom-question p {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    padding: 12px 24px;
   }
 
   /* Page 3 */
