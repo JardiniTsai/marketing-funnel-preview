@@ -132,7 +132,7 @@ section {
   align-items: center;
   justify-content: center;
   /* Account for progress bar (top ~60px) and step nav (bottom ~80px) */
-  padding: 100px 24px 120px;
+  padding: 70px 24px 90px;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -336,27 +336,32 @@ section.active .fade-in-up {
    ======================================== */
 #page2 {
   background: var(--light-pink-bg);
-  padding-top: 80px !important;
-  padding-bottom: 100px !important;
+}
+#page2 .section-inner {
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 #page2 .page2-layout {
-  gap: 16px;
-  margin-bottom: 16px;
-}
-#page2 .page2-col {
-  padding: 16px;
-}
-#page2 .page2-col h3 {
-  font-size: 1.1rem;
+  gap: 12px;
   margin-bottom: 12px;
 }
+#page2 .page2-col {
+  padding: 14px 16px;
+}
+#page2 .page2-col h3 {
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
 #page2 .page2-list li {
-  font-size: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
   margin-bottom: 6px;
 }
 #page2 .page2-final-question {
-  font-size: 1.4rem;
-  margin-top: 12px;
+  font-size: 1.3rem;
+  margin-top: 10px;
 }
 .page2-title {
   font-size: clamp(1.3rem, 3.5vw, 1.8rem);
