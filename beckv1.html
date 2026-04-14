@@ -167,10 +167,16 @@ section.active .fade-in-up {
   transform: translateY(0);
 }
 
-.section-inner {
+/* Critical fix for Page 2: ensure content fits in viewport */
+#page2 .section-inner {
   max-width: 1080px;
   width: 100%;
   margin: 0 auto;
+  /* Ensure content doesn't overflow */
+  max-height: calc(100vh - 60px - 80px - 70px - 90px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 0;
 }
 
 /* ========== ANIMATIONS ========== */
@@ -336,6 +342,9 @@ section.active .fade-in-up {
    ======================================== */
 #page2 {
   background: var(--light-pink-bg);
+  /* Critical fix: reduce padding to fit content within viewport */
+  padding-top: 70px !important;
+  padding-bottom: 90px !important;
 }
 .page2-layout {
   display: grid;
