@@ -48,6 +48,16 @@ body {
   height: 100dvh;
 }
 
+/* ========== CRITICAL FIX: Funnel content area ========== */
+.funnel-viewport {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
 button { cursor: pointer; border: none; font-family: inherit; }
@@ -119,20 +129,20 @@ input { font-family: inherit; }
 }
 
 /* ========== SECTIONS ========== */
+/* Each section fills the viewport but accounts for progress bar (top: 60px) and nav (bottom: 64px) */
 section {
   position: absolute;
-  top: 0;
+  top: 60px;      /* Progress bar height */
   left: 0;
   right: 0;
-  bottom: 0;
-  min-height: 100vh;
-  min-height: 100dvh;
+  bottom: 64px;   /* Navigation height */
+  min-height: auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  /* Account for progress bar (top ~60px) and step nav (bottom ~80px) */
-  padding: 70px 24px 90px;
+  justify-content: flex-start;
+  padding: 20px 24px 24px;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -141,8 +151,6 @@ section {
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
   transform: translateX(40px);
-
-  /* Critical fix: ensure content is visible */
   visibility: hidden;
 }
 section.active {
@@ -337,31 +345,97 @@ section.active .fade-in-up {
 #page2 {
   background: var(--light-pink-bg);
 }
-#page2 .section-inner {
-  max-width: 1080px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 24px;
-}
 #page2 .page2-layout {
-  gap: 12px;
-  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: 0.8fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+#page2 .page2-image-col {
+  position: relative;
+}
+#page2 .page2-screenshot-frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(26,26,94,0.12);
+  border: 3px solid var(--pink);
+  height: 100%;
+  background: var(--white);
+}
+#page2 .page2-screenshot-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+#page2 .page2-screenshot-overlay {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: var(--pink);
+  color: var(--white);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(255,107,157,0.3);
+}
+#page2 .page2-text-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 #page2 .page2-col {
-  padding: 14px 16px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 16px rgba(26,26,94,0.08);
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+#page2 .page2-col-left {
+  border-left-color: var(--navy);
+}
+#page2 .page2-col-right {
+  border-left-color: var(--pink);
 }
 #page2 .page2-col h3 {
-  font-size: 1.05rem;
-  margin-bottom: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--navy);
+}
+#page2 .page2-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 #page2 .page2-list li {
   font-size: 0.95rem;
   line-height: 1.5;
-  margin-bottom: 6px;
+  color: var(--text-on-light);
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+#page2 .page2-list li::before {
+  content: "•";
+  color: var(--pink);
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+}
+#page2 .page2-list li.highlight {
+  color: var(--pink);
+  font-weight: 700;
 }
 #page2 .page2-final-question {
-  font-size: 1.3rem;
-  margin-top: 10px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--pink);
+  margin-top: 12px;
 }
 .page2-title {
   font-size: clamp(1.3rem, 3.5vw, 1.8rem);
@@ -1212,9 +1286,9 @@ section.active .fade-in-up {
 <!-- ======================================================
      PAGE 2: 痛點放大 — 情緒加壓
      ====================================================== -->
-<section id="page2" data-theme="light" style="padding-top:60px !important;padding-bottom:80px !important;">
+<section id="page2" data-theme="light">
   <div class="section-inner">
-    <div class="page2-layout fade-in-up delay-1" style="gap:10px !important;margin-bottom:10px !important;">
+    <div class="page2-layout fade-in-up delay-1">
       <!-- Left: Screenshot with lihi design frame -->
       <div class="page2-image-col">
         <div class="page2-screenshot-frame">
@@ -1227,29 +1301,29 @@ section.active .fade-in-up {
       
       <!-- Right: Two text sections stacked -->
       <div class="page2-text-cols">
-        <div class="page2-col page2-col-left" style="padding:12px !important;">
-          <h3 style="font-size:1rem !important;margin-bottom:8px !important;">我們常常遇到的問題</h3>
+        <div class="page2-col page2-col-left">
+          <h3>我們常常遇到的問題</h3>
           <ul class="page2-list">
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">來客數不足</li>
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">做了優惠也沒幫助</li>
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">開始對產品失去信心</li>
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">開始懷疑人生</li>
+            <li>來客數不足</li>
+            <li>做了優惠也沒幫助</li>
+            <li>開始對產品失去信心</li>
+            <li>開始懷疑人生</li>
           </ul>
         </div>
-        <div class="page2-col page2-col-right" style="padding:12px !important;">
-          <h3 style="font-size:1rem !important;margin-bottom:8px !important;">行銷人看到的問題</h3>
+        <div class="page2-col page2-col-right">
+          <h3>行銷人看到的問題</h3>
           <ul class="page2-list">
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">不知道店家名稱</li>
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">看不到產品優點</li>
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">不知道在賣什麼</li>
-            <li style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">不清楚價格</li>
-            <li class="highlight" style="font-size:0.9rem !important;line-height:1.4 !important;margin-bottom:4px !important;">在這些都不清楚的情況下，優惠並不會有任何加分</li>
+            <li>不知道店家名稱</li>
+            <li>看不到產品優點</li>
+            <li>不知道在賣什麼</li>
+            <li>不清楚價格</li>
+            <li class="highlight">在這些都不清楚的情況下，優惠並不會有任何加分</li>
           </ul>
         </div>
       </div>
     </div>
     
-    <p class="page2-final-question fade-in-up" style="font-size:1.2rem !important;margin-top:8px !important;">我們要怎麼解決這個問題？</p>
+    <p class="page2-final-question fade-in-up">我們要怎麼解決這個問題？</p>
   </div>
 </section>
 
