@@ -370,7 +370,7 @@ section.active .fade-in-up {
 /* 左側圖片區域 */
 .page2-left-image {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   background: transparent !important;
   border: none !important;
@@ -378,9 +378,9 @@ section.active .fade-in-up {
 }
 
 .page2-reference-image {
-  max-width: 104%;
+  max-width: 80%;
   height: 100%;
-  width: 104%;
+  width: 80%;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(26,26,94,0.12) !important;
@@ -391,8 +391,9 @@ section.active .fade-in-up {
 .page2-right-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   gap: 16px;
+  height: 100%;
 }
 
 .page2-content-block {
@@ -405,7 +406,7 @@ section.active .fade-in-up {
   flex-direction: column;
   justify-content: flex-start;
   box-shadow: 0 2px 12px rgba(26,26,94,0.06);
-  max-width: 80%;
+  max-width: 100%;
 }
 
 .page2-content-block:first-child {
@@ -1033,7 +1034,7 @@ section.active .fade-in-up {
   }
 
   .page2-reference-image {
-    max-width: 104%;
+    max-width: 80%;
     height: auto;
     max-height: 280px;
   }
