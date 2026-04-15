@@ -361,7 +361,7 @@ section.active .fade-in-up {
   flex: 1;
   min-height: 0;
   justify-content: center;
-  transform: scale(0.8);
+  transform: scale(0.85);
   transform-origin: center center;
   max-width: 90%;
 }
@@ -377,8 +377,9 @@ section.active .fade-in-up {
 }
 
 .page2-reference-image {
-  max-width: 100%;
-  height: 100%;
+  max-width: 85%;
+  max-height: 420px;
+  height: auto;
   width: auto;
   object-fit: contain;
   border-radius: 0;
@@ -398,13 +399,17 @@ section.active .fade-in-up {
   background: var(--white);
   border: 2px solid rgba(26,26,94,0.12);
   border-radius: 12px;
-  padding: 8px 20px;
+  padding: 12px 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   box-shadow: 0 2px 12px rgba(26,26,94,0.06);
   max-width: 100%;
+}
+
+.page2-content-block:first-child {
+  padding-top: 8px;
 }
 
 .page2-content-block h3 {
@@ -479,7 +484,8 @@ section.active .fade-in-up {
 /* 底部問題 */
 .page2-bottom-question {
   text-align: center;
-  padding-bottom: 80px;
+  padding-bottom: 60px;
+  padding-top: 20px;
   flex-shrink: 0;
 }
 
