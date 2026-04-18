@@ -170,6 +170,11 @@ section.active .fade-in-up {
   transform: translateY(0);
 }
 
+/* Override: page2-bottom-question needs to shift up 5px */
+section.active .page2-bottom-question.fade-in-up {
+  transform: translateY(-5px);
+}
+
 /* Page 2: full-width, no scroll */
 #page2 {
   padding: 20px 0 !important;
@@ -496,7 +501,6 @@ section.active .fade-in-up {
   text-align: center;
   padding-bottom: 60px;
   padding-top: 40px;
-  margin-top: -5px;
   flex-shrink: 0;
   transform: translateY(-5px);
 }
